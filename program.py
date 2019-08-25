@@ -12,7 +12,7 @@ def scan(hostname, start, end, write, filename, timeout):
         s.settimeout(timeout)
         try:
             s.connect((hostname, port))
-        except socket.timeout:
+        except (socket.timeout, OSError):
             s.close()
             continue
         except ConnectionRefusedError:
