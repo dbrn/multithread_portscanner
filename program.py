@@ -27,7 +27,7 @@ def scan(hostname, start, end, write, filename, timeout):
             lock.acquire()
             with open(filename, "a") as file:
                 file.write(f"{port} OPEN\n")
-                
+
             # when we are done writing we release the lock
             lock.release()
         print(f"{port} OPEN")
@@ -67,8 +67,10 @@ def main():
     # equally among each thread, and add the remainder to the last one
     if args.threads is not None:
         num_threads = args.threads[0]
-        print(f"{num_threads} threads requested")
         port_num = (end_port - start_port)
+        if num_threads > port_num:
+            num_threads = port_num
+        print(f"{num_threads} threads requested")
         remainder = port_num % num_threads
         port_per_thread = int(port_num // num_threads)
         for i in range(num_threads):
